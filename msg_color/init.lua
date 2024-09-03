@@ -1,5 +1,7 @@
 minetest.log("Loading msg_color...")
 
+msg_color = {}
+
 local storage = minetest.get_mod_storage()
 
 local roles = {"[Admin]", "[Moderator]", "[Guardian]"}
@@ -101,7 +103,7 @@ minetest.register_chatcommand("msg_color", {
 	end
 })
 
-local function get_color(name)
+function msg_color.get_color(name)
 	local role = storage:get_string(name.."_role")
 	if role then
 		return storage:get_string(role.."_namecolor")
@@ -142,7 +144,7 @@ function minetest.format_chat_message(name, message)
 	if filter_caps then
 		message = filter_caps.parse(name, message)
 	end
-	local color = get_color(name)
+	local color = msg_color.get_color(name)
 	local tag = ""
 	local role = storage:get_string(name.."_role")
 	if role then
