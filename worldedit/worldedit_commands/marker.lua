@@ -13,9 +13,7 @@ worldedit.mark_pos1 = function(name, region_too)
 		worldedit.marker1[name] = nil
 	end
 	if pos1 ~= nil then
-		--make area stay loaded
-		local manip = minetest.get_voxel_manip()
-		manip:read_from_map(pos1, pos1)
+		worldedit.keep_loaded(pos1, pos1)
 
 		--add marker
 		worldedit.marker1[name] = minetest.add_entity(pos1, "worldedit:pos1", init_sentinel)
@@ -37,9 +35,7 @@ worldedit.mark_pos2 = function(name, region_too)
 		worldedit.marker2[name] = nil
 	end
 	if pos2 ~= nil then
-		--make area stay loaded
-		local manip = minetest.get_voxel_manip()
-		manip:read_from_map(pos2, pos2)
+		worldedit.keep_loaded(pos2, pos2)
 
 		--add marker
 		worldedit.marker2[name] = minetest.add_entity(pos2, "worldedit:pos2", init_sentinel)
@@ -67,19 +63,7 @@ worldedit.mark_region = function(name)
 
 		local vec = vector.subtract(pos2, pos1)
 		local maxside = math.max(vec.x, math.max(vec.y, vec.z))
-
-		-- Debug
-		local debugvar = "Debug from mark.lua:72 > "..minetest.settings:get("active_object_send_range_blocks")
-		minetest.log("warning", debugvar)
-
-		-- Modified by fancyfinn9 because of a server crash here
-		local limit = 8 * 16
-		if minetest.settings:get("active_object_send_range_blocks") then
-			limit = tonumber(minetest.settings:get("active_object_send_range_blocks")) * 16
-		end
-
-		-- End of modification
-
+		local limit = tonumber(minetest.settings:get("active_object_send_range_blocks")) * 16
 		if maxside > limit * 1.5 then
 			-- The client likely won't be able to see the plane markers as intended anyway,
 			-- thus don't place them and also don't load the area into memory
@@ -89,15 +73,14 @@ worldedit.mark_region = function(name)
 		local thickness = 0.2
 		local sizex, sizey, sizez = (1 + pos2.x - pos1.x) / 2, (1 + pos2.y - pos1.y) / 2, (1 + pos2.z - pos1.z) / 2
 
-		--make area stay loaded
-		local manip = minetest.get_voxel_manip()
-		manip:read_from_map(pos1, pos2)
+		-- TODO maybe we could skip this actually?
+		worldedit.keep_loaded(pos1, pos2)
 
 		local markers = {}
 
 		--XY plane markers
 		for _, z in ipairs({pos1.z - 0.5, pos2.z + 0.5}) do
-			local entpos = {x=pos1.x + sizex - 0.5, y=pos1.y + sizey - 0.5, z=z}
+			local entpos = vector.new(pos1.x + sizex - 0.5, pos1.y + sizey - 0.5, z)
 			local marker = minetest.add_entity(entpos, "worldedit:region_cube", init_sentinel)
 			if marker ~= nil then
 				marker:set_properties({
@@ -111,7 +94,7 @@ worldedit.mark_region = function(name)
 
 		--YZ plane markers
 		for _, x in ipairs({pos1.x - 0.5, pos2.x + 0.5}) do
-			local entpos = {x=x, y=pos1.y + sizey - 0.5, z=pos1.z + sizez - 0.5}
+			local entpos = vector.new(x, pos1.y + sizey - 0.5, pos1.z + sizez - 0.5)
 			local marker = minetest.add_entity(entpos, "worldedit:region_cube", init_sentinel)
 			if marker ~= nil then
 				marker:set_properties({
