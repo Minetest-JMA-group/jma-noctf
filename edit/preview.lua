@@ -452,6 +452,9 @@ minetest.register_globalstep(function(dtime)
 	for _, player in pairs(minetest.get_connected_players()) do
 		local item = player:get_wielded_item():get_name()
 		local d = edit.player_data[player]
+		if not d then
+			return
+		end
 
 		-- Paste preview
 		if item == "edit:paste" and d.schematic then
