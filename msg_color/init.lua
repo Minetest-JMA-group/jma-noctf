@@ -161,7 +161,7 @@ end
 
 function msg_color.get_color(name)
 	local tag = player_tags[name]
-	if not tags[tag] then
+	if tag and not tags[tag] then	-- Handle the case of tag deletion after the player had joined
 		player_tags[name] = nil
 		tag = nil
 		player_colors[name] = colors[get_color_index()]
