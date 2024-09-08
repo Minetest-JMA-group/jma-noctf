@@ -20,7 +20,7 @@ minetest.register_chatcommand("msg_color", {
 
 		if command == "help" then
 			minetest.chat_send_player(name, "List of possible commands:")
-			minetest.chat_send_player(name, "listtag: Lists the available tags")
+			minetest.chat_send_player(name, "listtags: Lists the available tags")
 			minetest.chat_send_player(name, "settag <name> <tag>: Sets the player's tag")
 			minetest.chat_send_player(name, "unsettag <name>: Unset the player's tag")
 			minetest.chat_send_player(name, "tagcolor <tag> <color>: Sets the color of the tag itself")
@@ -29,7 +29,7 @@ minetest.register_chatcommand("msg_color", {
 			minetest.chat_send_player(name, "add [tag/color] <tagstr/colorstr>: Add tag/color equal to tagstr/colorstr")
 			return true
 		end
-		if command == "listtag" then
+		if command == "listtags" then
 			minetest.chat_send_player(name, "List of available tags:")
 			for tag, tag_color in pairs(tags) do
 				minetest.chat_send_player(name, tag..": "..minetest.colorize(tag_color, tag).." "..minetest.colorize(tag_namecolor[tag], "<Username>"))
@@ -104,7 +104,9 @@ minetest.register_chatcommand("msg_color", {
 					return false, "Tag "..ident.." already exists."
 				end
 				tags[ident] = "#FFFFFF"
+				tag_namecolor[ident] = "#FFFFFF"
 				storage:set_string("tag_list", minetest.serialize(tags))
+				storage:set_string("tag_namecolor_list", minetest.serialize(tag_namecolor))
 				return true, "Tag "..ident.." added."
 			end
 			if what == "color" then
