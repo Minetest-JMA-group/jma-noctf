@@ -2,8 +2,8 @@ msg_color = {}
 
 local storage = algorithms.get_mod_storage()
 
-local tags = algorithms.getconfig("tag_list", {"[Admin]"="#FF0000", "[Moderator]"="#3C3CC8", "[Guardian]"="#788296", "[Developer]"="#BE00C8"})
-local tag_namecolor = algorithms.getconfig("tag_namecolor_list", {"[Admin]"="#FF0000", "[Moderator]"="#3C3CC8", "[Guardian]"="#788296", "[Developer]"="#BE00C8"})
+local tags = algorithms.getconfig("tag_list", {["[Admin]"]="#FF0000", ["[Moderator]"]="#3C3CC8", ["[Guardian]"]="#788296", ["[Developer]"]="#BE00C8"})
+local tag_namecolor = algorithms.getconfig("tag_namecolor_list", {["[Admin]"]="#FF0000", ["[Moderator]"]="#3C3CC8", ["[Guardian]"]="#788296", ["[Developer]"]="#BE00C8"})
 local colors = algorithms.getconfig("color_list", {"#E4FF00", "#17FF00", "#06E5CE", "#0617E5", "#005A28"})
 local i = 0
 
@@ -209,6 +209,6 @@ function minetest.format_chat_message(name, message)
 	else
 		tag = ""
 	end
-			
+
 	return tag .. minetest.colorize(namecolor, '<' .. name .. '> ') .. message
 end
