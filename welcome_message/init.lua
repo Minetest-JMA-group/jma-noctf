@@ -27,7 +27,7 @@ minetest.register_on_joinplayer(
 		if last_login == nil then
 			minetest.chat_send_all(minetest.colorize(msg_color.get_color(player), "[" .. name .. "]") .. minetest.colorize("#3B633D", " has joined the game for the first time! Welcome!"))
 		else
-			local last_login_msg = algorithms.time_to_string(os.time() - last_login)
+			local last_login_msg = algorithms.time_to_string(os.time() - last_login).." ago"
 			minetest.chat_send_all(minetest.colorize("#3B633D", "Welcome back, ") .. minetest.colorize(msg_color.get_color(player), "<" .. name .. ">") .. minetest.colorize("#3B633D", "! Last login: " .. last_login_msg))
 		end
 		
