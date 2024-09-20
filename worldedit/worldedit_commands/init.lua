@@ -210,6 +210,10 @@ worldedit.register_command("about", {
 local function help_command(name, param)
 	local function format_help_line(cmd, def, follow_alias)
 		local msg = minetest.colorize("#00ffff", "//"..cmd)
+
+		if not def.name then def.name = "<no name found>" end
+		if not def.description then	def.description = "<no description found>" end
+		
 		if def.name ~= cmd then
 			msg = msg .. ": " .. S("alias to @1",
 				minetest.colorize("#00ffff", "//"..def.name))
