@@ -11,13 +11,6 @@ function core.send_leave_message(player_name, timed_out)
 	old_send_leave_message(player_name, timed_out)
 end
 
-local function checkPlural(timeNum, timeStr)
-	if timeNum == 1 then
-		return timeStr
-	end
-	return timeStr .. "s"
-end
-
 minetest.register_on_joinplayer(
 	function(player, last_login)
 		local name = player:get_player_name()
