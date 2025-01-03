@@ -166,9 +166,17 @@ local function create_wall(player_name, pos1, pos2, sides_to_display)
 		-- sides_to_display = "+x-x+z-z+y-y"
 	end
 	-- print("DEBUG:marker_wall create_wall --> START player_name", player_name, "pos1", pos1, "pos2", pos2)
-	local pos1s, pos2s = Vector3.sort(pos1, pos2)
-	
 	local entities = {}
+	local pos1s, pos2s = Vector3.sort(pos1, pos2)
+	local checkvec = pos2s - pos1s
+	local maxside = math.max(checkvec.x, math.max(checkvec.y, checkvec.z))
+	local limit = (tonumber(minetest.settings:get("active_object_send_range_blocks")) or 2) * 16
+	if maxside > limit * 1.5 then
+		-- The client likely won't be able to see the plane markers as intended anyway,
+		-- thus don't place them and also don't load the area into memory
+		return {}
+	end
+
 	-- local dim1, dim2
 	-- if side == "x" or side == "-x" then dim1, dim2 = size.z, size.y
 	-- elseif side == "z" or size == "-z" then dim1, dim2 = size.x, size.y
