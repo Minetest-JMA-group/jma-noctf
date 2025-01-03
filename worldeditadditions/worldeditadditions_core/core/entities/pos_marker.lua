@@ -32,7 +32,7 @@ local WEAPositionMarker = {
 	
 	on_activate = function(self, staticdata)
 		local data = minetest.parse_json(staticdata)
-		print("DEBUG:pos_marker ON_ACTIVATE data", data)
+		-- print("DEBUG:pos_marker ON_ACTIVATE data", data)
 		if type(data) ~= "table" or data.id ~= last_reset then
 			-- print("DEBUG:marker_wall/remove staticdata", staticdata, "last_reset", last_reset)
 			self.object:remove()
@@ -54,7 +54,7 @@ local WEAPositionMarker = {
 		anchor.set_number(self.object, self.display_number)
 	end,
 	on_punch = function(self, _)
-		print("DEBUG:pos_marker on_punch")
+		-- print("DEBUG:pos_marker on_punch")
 		anchor.delete(self)
 	end,
 	on_blast = function(self, damage)

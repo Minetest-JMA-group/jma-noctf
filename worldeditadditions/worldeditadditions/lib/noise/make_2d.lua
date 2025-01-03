@@ -55,7 +55,7 @@ function worldeditadditions.noise.make_2d(size, start_pos, params)
 	end
 	
 	
-	print("NOISE MAKE_2D\n")
+	--print("NOISE MAKE_2D\n")
 	wea_c.format.array_2d(result, size.x)
 	
 	

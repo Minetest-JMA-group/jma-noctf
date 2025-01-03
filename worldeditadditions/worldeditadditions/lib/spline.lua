@@ -69,7 +69,7 @@ function worldeditadditions.spline(pos_list, width_start, width_end, steps, targ
 		data[area:indexp(pos_prev)] = node_id
 		
 		local subline_length = (pos_next - pos_prev):length()
-		print("DEBUG:spline DRAW pos", pos_next, "width", width_next, "length", subline_length)
+		--print("DEBUG:spline DRAW pos", pos_next, "width", width_next, "length", subline_length)
 		if subline_length > 0 then
 			
 			-- Iterate a box around the subline and draw it
@@ -78,7 +78,7 @@ function worldeditadditions.spline(pos_list, width_start, width_end, steps, targ
 			subpos1 = subpos1 - width_max
 			subpos2 = subpos2 + width_max
 			
-			print("subpos1", subpos1, "subpos2", subpos2, "width_prev", width_prev, "width_next", width_next)
+			--print("subpos1", subpos1, "subpos2", subpos2, "width_prev", width_prev, "width_next", width_next)
 			
 			for z = subpos2.z, subpos1.z, -1 do
 				for y = subpos2.y, subpos1.y, -1 do
