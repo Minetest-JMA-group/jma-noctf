@@ -15,6 +15,11 @@ function mail.register_on_player_receive(func)
 	table.insert(mail.registered_on_player_receives, func)
 end
 
+mail.registered_on_sends = {}
+function mail.register_on_send(func)
+	table.insert(mail.registered_on_sends, func)
+end
+
 mail.registered_recipient_handlers = {}
 function mail.register_recipient_handler(func)
 	table.insert(mail.registered_recipient_handlers, func)
@@ -38,7 +43,7 @@ function mail.send(m)
 	m.to = mail.normalize_players_and_add_recipients(m.from, m.to, recipients, undeliverable)
 	if m.cc then
 		m.cc = mail.concat_player_list(mail.extract_maillists(m.cc, m.from))
-		m.cc = mail.normalize_players_and_add_recipients(mail.from, m.cc, recipients, undeliverable)
+		m.cc = mail.normalize_players_and_add_recipients(m.from, m.cc, recipients, undeliverable)
 	end
 	if m.bcc then
 		m.bcc = mail.concat_player_list(mail.extract_maillists(m.bcc, m.from))
@@ -106,6 +111,10 @@ function mail.send(m)
 		if mail.registered_on_receives[i](m) then
 			break
 		end
+	end
+
+	for i=1, #mail.registered_on_sends do
+		mail.registered_on_sends[i](m)
 	end
 
 	return true
