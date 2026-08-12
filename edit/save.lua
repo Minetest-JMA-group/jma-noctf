@@ -107,13 +107,10 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 
 	minetest.mkdir(path)
 	local schem_path = path .. "/" .. schem_filename
-	local f = io.open(schem_path, "wb")
-	if not f then
+	if not core.safe_file_write(schem_path, data) then
 		minetest.chat_send_player(player:get_player_name(), "IO error saving schematic.")
 		return true
 	end
-	f:write(data)
-	f:close()
 	minetest.chat_send_player(player:get_player_name(),
 		"\"" .. schem_filename .. "\" saved." )
 	return true
