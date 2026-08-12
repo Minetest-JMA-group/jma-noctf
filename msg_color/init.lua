@@ -198,6 +198,7 @@ minetest.register_on_leaveplayer(
 	end
 )
 
+local old_format_chat_message = minetest.format_chat_message
 function minetest.format_chat_message(name, message)
 	if filter_caps then
 		message = filter_caps.parse(name, message)
@@ -210,5 +211,19 @@ function minetest.format_chat_message(name, message)
 		tag = ""
 	end
 
-	return tag .. minetest.colorize(namecolor, '<' .. name .. '> ') .. message
+	-- Chain onto the formatter that was installed before this mod (the
+	-- engine builtin, or another mod's wrapper such as the ranks chat
+	-- prefix) so that load order cannot silently drop other formatting.
+	local base = old_format_chat_message and old_format_chat_message(name, message)
+		or ("<" .. name .. "> " .. message)
+	-- Plain-text search (no pattern escaping needed); byte offsets are
+	-- consistent for multibyte (e.g. Cyrillic) player names.
+	local name_header = "<" .. name .. ">"
+	local start_pos = base:find(name_header, 1, true)
+	if start_pos then
+		return base:sub(1, start_pos - 1) .. tag ..
+			minetest.colorize(namecolor, name_header) ..
+			base:sub(start_pos + #name_header)
+	end
+	return tag .. minetest.colorize(namecolor, name_header .. " ") .. base
 end
